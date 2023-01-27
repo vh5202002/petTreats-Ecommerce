@@ -1,8 +1,14 @@
-FROM nginx:1.23.3-alpine
 
-COPY ./build /var/www
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM node:19-alpine
 
-EXPOSE 80
+WORKDIR /app
 
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+COPY ["package.json", "package-lock.json", "./"]
+
+RUN npm install --production
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
